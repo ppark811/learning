@@ -1,0 +1,11 @@
+##### Deployment of Machine Learning Models #####
+
+What is Model Deployment?
+- Model deployment is the process for making models available in production environments, where they can provide predictions to other software systems.
+- It is one of the last stages of an ML lifecycle, potentially one of the most challenging
+
+Why is it challenging?
+- Challenges: Reliability, reusability, maintainability, flexibility, and reproducability (<- this last one is specific to ML)
+- Needs coordination from data scientists, IT teams, sw devs, stakeholders, and busines professionals.
+- Often a discrepancy btw programming language it was developed in and the production system language. Recoding is a risk
+- To start using ML model, it needs to be effectively deployed
