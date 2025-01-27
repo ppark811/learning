@@ -1,11 +1,91 @@
 ##### Deployment of Machine Learning Models #####
+  What is Model Deployment?
+  - Model deployment is the process for making models available in production environments, where they can provide predictions to other software systems.
+  - It is one of the last stages of an ML lifecycle, potentially one of the most challenging
+  
+  Why is it challenging?
+  - Challenges: Reliability, reusability, maintainability, flexibility, and reproducability (<- this last one is specific to ML)
+  - Needs coordination from data scientists, IT teams, sw devs, stakeholders, and busines professionals.
+  - Often a discrepancy btw programming language it was developed in and the production system language. Recoding is a risk
+  - To start using ML model, it needs to be effectively deployed
 
-What is Model Deployment?
-- Model deployment is the process for making models available in production environments, where they can provide predictions to other software systems.
-- It is one of the last stages of an ML lifecycle, potentially one of the most challenging
 
-Why is it challenging?
-- Challenges: Reliability, reusability, maintainability, flexibility, and reproducability (<- this last one is specific to ML)
-- Needs coordination from data scientists, IT teams, sw devs, stakeholders, and busines professionals.
-- Often a discrepancy btw programming language it was developed in and the production system language. Recoding is a risk
-- To start using ML model, it needs to be effectively deployed
+##### Deployment of ML Pipelines #####
+  Data quality can be an issue
+  - Missing parameters
+  - strings instead of numbers
+  - outliers may exist
+  - various distributions that may affect performance of model
+  - values in different scales
+  - data in text, images, transactions, time-series, location, time, date, etc
+  - To resolve these issues, perform feature engineering (transform variables, extract features, create new features, etc)
+  
+  Deployment of ML pipeline
+  - All parts of research environment needs to be deployed, not just the model.
+    - such as feature engineeirng, model training, and scoring
+
+
+##### Building reproducible ML pipelines #####
+  Why reproducibility matters?
+  - Finanical costs
+  - Lost time figuring out why research and deployment results are not the same
+  - Lost reputation
+  - Without reprocudibility, it is hard to determine if a new model is truly better than the previous one
+
+
+##### Challenges to reproducibility #####
+  Every steps in pipeline need to produce same results between research and deployment
+    Challenges
+      - Traning dataset can't be reproduced
+      - databases are constantly updated and overwritten
+      - order of data while loading is random (SQL)
+    Solutions
+      - Save a snapshot of training data (not suitable for big data, potential conflict with GDPR)
+      - Design data source with accurate timestamps or immutable column that marks the column ID#)
+
+  Reproducibility during feature engineering
+    Lack of reproducibility
+      - Replacing missing data with random extracted values
+      - removing labels based on percentages of observations
+      - calculating statistical values like the mean to use for missing value replacement
+      - More complex equations to extract features (e.g aggregating over time)
+    How to ensure reproducibility?
+      - Code on how a feature is generated should be tracked under version control and published with auto-incremented or timestamp hashed versions
+      - Many of the params extracted for feature engineering depend on the data used fopr training -> ensure data is reproducible
+      - If replacing by extracting random samples, always set a seed (avoid random samples in general)
+
+  Reproducibility during Model Training
+    Challenges
+      - ML models rely onrandomness for training (data and feature extraction for trees, weight init for neural networks, etc)
+      - ML model implementations workwith arrays agnostic to feature names - need to be careful to feed data in the correct order
+    Solutions
+      - Record order of features
+      - Record applied feature transforms
+      - record hyperparameters
+      - for models that require randomness, always set a seed
+      - if the final model is a stack of models, record the structure of the ensemble
+
+  Reproducibility during Model Deployment
+    Challenges
+      - Feature is not available in the live environment
+      - different programming languages
+      - different software
+      - live populations dont match those used for training
+    Solutions
+      - SW version should match exactly - applicatns should list all third party library depenencies and their versions
+      - use a container and track sw specs
+      - research, develop, and deploy using the same language (eg, python, C++, etc)
+      - Prior to building the model, understand how the model will be integrated with other systems
+  
+
+
+
+
+
+
+
+
+
+
+
+
